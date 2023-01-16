@@ -1,8 +1,8 @@
-volatile unsigned  long t =0;
-volatile   unsigned long t0=0;
-volatile   unsigned long t1=0;
-volatile   unsigned long tw=0;
-volatile   unsigned long tp=0;
+volatile     long t =0;
+volatile     long t0=0xffffffff;
+volatile     long t1=0;
+volatile     long tw=0;
+volatile       long tp=0;
 
 volatile   unsigned long risingEdges=0;
 volatile   unsigned long fallingEdges=0;
@@ -67,27 +67,42 @@ else
 
 void loop() {
   // put your main code here, to run repeatedly:
-
+  //noInterrupts();  
   t1 =  micros();
+  //interrupts();  
 
-  if (  t1 - t0 > 2*tp )
-  {
+  if (risingEdges > 1 &&  fallingEdges > 1 && (t1-t0) > 0 &&   (t1 - t0) > 1.5*tp   )
+  { 
+    noInterrupts();
     digitalWrite(PIN_START_TRIGGER,LOW);    
     digitalWrite(PIN_STOP_TRIGGER,HIGH);
     digitalWrite(RXLED, HIGH);
-
-   if(risingEdges !=0)
-   {
     
-    Serial.print(tp);
-    Serial.print(" ");
-    Serial.print(tw); 
-    Serial.print(" "); 
-    Serial.print(risingEdges);  
-    Serial.print(" ");
-    Serial.println(fallingEdges);  
-   }
+      if(risingEdges !=0)
+      {
+          
+        Serial.print(t1-t0);
+        Serial.print(" ");
+        Serial.print(tp);
+        Serial.print(" ");
+        Serial.print(tw); 
+        Serial.print(" "); 
+        Serial.print(risingEdges);  
+        Serial.print(" ");
+        Serial.println(fallingEdges);  
+        
+      }
     risingEdges = 0;
     fallingEdges = 0;
+    t =0;
+    t0=0xffffffff;
+    t1=0;
+    tw=0;
+    tp=0;
+    interrupts();
+  }
+  else
+  {
+
   }
 }

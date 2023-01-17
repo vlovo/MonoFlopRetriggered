@@ -1,5 +1,5 @@
 volatile     long t =0;
-volatile     long t0=0xffffffff;
+volatile     long t0=0xffff;
 volatile     long t1=0;
 volatile     long tw=0;
 volatile       long tp=0;
@@ -95,7 +95,7 @@ void loop() {
     risingEdges = 0;
     fallingEdges = 0;
     t =0;
-    t0=0xffffffff;
+    t0=0xffff;
     t1=0;
     tw=0;
     tp=0;
